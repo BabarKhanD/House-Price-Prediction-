@@ -1,0 +1,86 @@
+import pandas as pd
+df = pd.read_csv('Housing.csv')
+
+from sklearn.preprocessing import LabelEncoder
+
+categorical_cols = ['mainroad', 'guestroom', 'basement', 'hotwaterheating', 
+                    'airconditioning', 'prefarea', 'furnishingstatus']
+le = LabelEncoder()
+for col in categorical_cols:
+    df[col] = le.fit_transform(df[col])
+
+X = df.drop('price', axis=1)
+y = df['price']
+
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+from sklearn.linear_model import LinearRegression
+lr_model = LinearRegression()
+lr_model.fit(X_train, y_train)
+lr_preds = lr_model.predict(X_test)
+
+from sklearn.ensemble import GradientBoostingRegressor
+gb_model = GradientBoostingRegressor()
+gb_model.fit(X_train, y_train)
+gb_preds = gb_model.predict(X_test)
+
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+import numpy as np
+
+def evaluate(y_true, y_pred, model_name):
+    mae = mean_absolute_error(y_true, y_pred)
+    rmse = np.sqrt(mean_squared_error(y_true, y_pred))
+    print(f"{model_name} - MAE: {mae:.2f}, RMSE: {rmse:.2f}")
+
+evaluate(y_test, lr_preds, "Linear Regression")
+evaluate(y_test, gb_preds, "Gradient Boosting")
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10,5))
+plt.plot(y_test.values, label="Actual Prices", marker='o')
+plt.plot(gb_preds, label="Predicted Prices (GB)", marker='x')
+plt.title("Actual vs Predicted House Prices")
+plt.xlabel("Sample Index")
+plt.ylabel("Price")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(7, 5))
+plt.scatter(y_test, gb_preds, alpha=0.6, color='green')
+plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--')  # Reference line
+plt.xlabel("Actual Price")
+plt.ylabel("Predicted Price")
+plt.title("Actual vs Predicted (Scatter Plot)")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+plt.figure(figsize=(12, 6))
+indices = range(20)
+plt.bar(indices, y_test.values[:20], width=0.4, label='Actual', align='center')
+plt.bar([i + 0.4 for i in indices], gb_preds[:20], width=0.4, label='Predicted', align='center')
+plt.xlabel("Sample Index")
+plt.ylabel("Price")
+plt.title("Actual vs Predicted Prices (First 20 Samples)")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+sorted_idx = y_test.argsort()
+sorted_actual = y_test.values[sorted_idx]
+sorted_pred = gb_preds[sorted_idx]
+
+plt.figure(figsize=(10, 5))
+plt.plot(sorted_actual, label='Actual', marker='o')
+plt.plot(sorted_pred, label='Predicted', marker='x')
+plt.title("Sorted Actual vs Predicted Prices")
+plt.xlabel("Sample Index (sorted)")
+plt.ylabel("Price")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
