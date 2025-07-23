@@ -1,0 +1,43 @@
+🏡 House Price Prediction
+
+📌 Task Objective
+Predict house prices using machine learning models (Linear Regression and Gradient Boosting) based on property features such as:
+- Area (square footage)
+- Number of bedrooms and bathrooms
+- Location-related attributes
+- Amenities (main road access, furnishing, etc.)
+
+📂 Dataset Used
+Source: [Housing.csv from Kaggle](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset)  
+The dataset includes the following features:
+- `price` (target)
+- `area`, `bedrooms`, `bathrooms`, `stories`
+- `mainroad`, `guestroom`, `basement`, `airconditioning`, `hotwaterheating`
+- `furnishingstatus`, `prefarea`, `parking`
+
+🤖 Models Applied
+- Linear Regression
+- Gradient Boosting Regressor
+
+📊 Evaluation Metrics
+- MAE (Mean Absolute Error)
+- RMSE (Root Mean Square Error)
+
+📈 Visualizations Included
+- Line Plot (Actual vs Predicted)
+- Scatter Plot (Actual vs Predicted)
+- Bar Chart (First 20 predictions)
+- Sorted Line Plot
+
+🧪 Results Summary
+| Model               | MAE       | RMSE      |
+|--------------------|-----------|-----------|
+| Linear Regression   | *(your result)* | *(your result)* |
+| Gradient Boosting   | *(your result)* | *(your result)* |
+
+> Gradient Boosting showed better performance overall.
+
+✅ How to Run
+1. Clone the repository:
+```bash
+git clone https://github.com/your-username/House-Price-Prediction.git
